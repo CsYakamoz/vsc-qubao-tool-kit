@@ -24,4 +24,7 @@ interface CprSetting {
 
 interface JumpSetting {
     defaultPoint: string;
+    viewColumn: number;
+    preview: boolean;
+    preserveFocus: boolean;
 }

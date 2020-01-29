@@ -1,14 +1,14 @@
 import * as vscode from 'vscode';
 import * as CpR from './cpr';
 import * as PmR from './pmr';
-import Jump from './jump';
+import Switching from './switching';
 
 const config = {
     'extension.qtk.cpr.exec': (uri: any) => CpR.exec(uri),
     'extension.qtk.cpr.reset': () => CpR.reset(),
     'extension.qtk.pmr.exec': () => PmR.exec(),
     'extension.qtk.pmr.reset': () => PmR.reset(),
-    'extension.qtk.jump': (uri: any) => Jump(uri)
+    'extension.qtk.switching': (uri: any) => Switching(uri)
 };
 
 async function init() {

@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 import * as childProcess from 'child_process';
-import { showQuickPick, getFolder } from '../utility';
+import { showQuickPick } from '../utility';
 import { get } from './jump_config';
 
 const FileType = {
@@ -13,7 +13,7 @@ const FileType = {
 const SchemaPattern = /(.*)\/schema\/([0-9a-z_\.]+)(?:[\/a-z0-9_\.]*)/;
 const HandlerPattern = /(.*)\/handler\/([0-9a-z_\.]+)(?:[\/a-z0-9\.])+/;
 
-export default async function jump(uri: any) {
+export default async function switching(uri: any) {
     if (uri === undefined) {
         return;
     }
@@ -61,9 +61,14 @@ export default async function jump(uri: any) {
 }
 
 async function openFile(fsPath: string) {
-    return vscode.workspace
-        .openTextDocument(fsPath)
-        .then(doc => vscode.window.showTextDocument(doc, { preview: false }));
+    const config = get();
+    return vscode.workspace.openTextDocument(fsPath).then(doc =>
+        vscode.window.showTextDocument(doc, {
+            preview: config.preview,
+            viewColumn: config.viewColumn,
+            preserveFocus: config.preserveFocus
+        })
+    );
 }
 
 async function find(command: string) {

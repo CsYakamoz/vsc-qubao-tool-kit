@@ -21,93 +21,124 @@
                 "qtk": {
                     "type": "object",
                     "description": "the configuration of qubao tool kit",
-                    "cpr": {
-                        "type": "object",
-                        "description": "cpr config for every folder",
-                        "patternProperties": {
-                            ".+": {
-                                "type": "object",
-                                "properties": {
-                                    "targetId": {
-                                        "type": "string"
-                                    },
-                                    "list": {
-                                        "type": "array",
-                                        "additionalItems": false,
-                                        "items": {
-                                            "type": "object",
-                                            "properties": {
-                                                "remoteAddr": {
-                                                    "type": "string"
-                                                },
-                                                "remoteUser": {
-                                                    "type": "string"
-                                                },
-                                                "remoteDir": {
-                                                    "type": "string"
-                                                },
-                                                "id": {
-                                                    "type": "string"
-                                                }
-                                            },
-                                            "required": [
-                                                "remoteAddr",
-                                                "remoteUser",
-                                                "remoteDir",
-                                                "id"
-                                            ]
-                                        }
-                                    }
-                                },
-                                "required": [
-                                    "targetId",
-                                    "list"
-                                ]
-                            }
-                        }
-                    },
-                    "pmr": {
-                        "type": "object",
-                        "description": "pmr config for every remote server",
-                        "properties": {
-                            "targetId": {
-                                "type": "string",
-                                "description": "target config"
-                            },
-                            "list": {
-                                "type": "array",
-                                "additionalItems": false,
-                                "items": {
+                    "properties": {
+                        "cpr": {
+                            "type": "object",
+                            "description": "cpr config for every folder",
+                            "patternProperties": {
+                                ".+": {
                                     "type": "object",
                                     "properties": {
-                                        "id": {
-                                            "type": "string"
+                                        "targetId": {
+                                            "type": "string",
+                                            "description": "target config"
                                         },
-                                        "remoteUser": {
-                                            "type": "string"
-                                        },
-                                        "remoteAddr": {
-                                            "type": "string"
+                                        "list": {
+                                            "type": "array",
+                                            "additionalItems": false,
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "remoteAddr": {
+                                                        "type": "string"
+                                                    },
+                                                    "remoteUser": {
+                                                        "type": "string"
+                                                    },
+                                                    "remoteDir": {
+                                                        "type": "string"
+                                                    },
+                                                    "id": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "remoteAddr",
+                                                    "remoteUser",
+                                                    "remoteDir",
+                                                    "id"
+                                                ]
+                                            }
                                         }
                                     },
                                     "required": [
-                                        "id",
-                                        "remoteUser",
-                                        "remoteAddr"
+                                        "targetId",
+                                        "list"
                                     ]
                                 }
                             }
                         },
-                        "required": [
-                            "targetId",
-                            "list"
-                        ]
-                    },
-                    "jump": {
-                        "type": "object",
-                        "properties": {
-                            "defaultPoint": {
-                                "type": "string"
+                        "pmr": {
+                            "type": "object",
+                            "description": "pmr config for every remote server",
+                            "properties": {
+                                "targetId": {
+                                    "type": "string",
+                                    "description": "target config"
+                                },
+                                "list": {
+                                    "type": "array",
+                                    "additionalItems": false,
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "remoteUser": {
+                                                "type": "string"
+                                            },
+                                            "remoteAddr": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "id",
+                                            "remoteUser",
+                                            "remoteAddr"
+                                        ]
+                                    }
+                                }
+                            },
+                            "required": [
+                                "targetId",
+                                "list"
+                            ]
+                        },
+                        "switching": {
+                            "type": "object",
+                            "properties": {
+                                "defaultPoint": {
+                                    "type": "string",
+                                    "description": "default jump to the file if exists"
+                                },
+                                "viewColumn": {
+                                    "type": "integer",
+                                    "description": "where to open the file",
+                                    "default": -1,
+                                    "enum": [
+                                        -2,
+                                        -1,
+                                        1,
+                                        2,
+                                        3,
+                                        4,
+                                        5,
+                                        6,
+                                        7,
+                                        8
+                                    ]
+                                },
+                                "preview": {
+                                    "type": "boolean",
+                                    "default": true,
+                                    "description": "An optional view column in which the editor should be shown"
+                                },
+                                "preserveFocus": {
+                                    "type": "boolean",
+                                    "default": false,
+                                    "description": "An optional flag that when true will stop the editor from taking focus"
+                                }
                             }
                         }
                     }
@@ -132,8 +163,8 @@
                 "title": "PmR-Reset"
             },
             {
-                "command": "extension.qtk.jump",
-                "title": "jump"
+                "command": "extension.qtk.switching",
+                "title": "switching"
             }
         ],
         "menus": {
@@ -152,13 +183,13 @@
             "editor/context": [
                 {
                     "when": "editorFocus",
-                    "command": "extension.qtk.jump",
+                    "command": "extension.qtk.switching",
                     "group": "navigation"
                 }
             ],
             "explorer/context": [
                 {
-                    "command": "extension.qtk.jump",
+                    "command": "extension.qtk.switching",
                     "group": "navigation"
                 }
             ]
