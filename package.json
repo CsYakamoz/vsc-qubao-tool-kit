@@ -186,7 +186,7 @@
             ],
             "editor/context": [
                 {
-                    "when": "editorFocus",
+                    "when": "editorFocus && resourceLangId == javascript",
                     "command": "extension.qtk.switching",
                     "group": "navigation"
                 }
@@ -194,7 +194,7 @@
             "explorer/context": [
                 {
                     "command": "extension.qtk.switching",
-                    "group": "navigation"
+                    "group": "2_workspace"
                 }
             ]
         }
