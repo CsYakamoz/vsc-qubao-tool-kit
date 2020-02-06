@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as CpR from './cpr';
 import * as PmR from './pmr';
 import Switching from './switching';
+import Jump from './jump';
 
 const config = {
     'extension.qtk.cpr.exec': (uri: any) => CpR.exec(uri),
@@ -21,6 +22,12 @@ export function activate(context: vscode.ExtensionContext) {
         context.subscriptions.push(
             vscode.commands.registerCommand(command, func)
         )
+    );
+
+    context.subscriptions.push(
+        vscode.languages.registerDefinitionProvider(['javascript'], {
+            provideDefinition: Jump
+        })
     );
 
     init();
