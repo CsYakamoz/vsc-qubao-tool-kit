@@ -1,7 +1,6 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
-import * as childProcess from 'child_process';
-import { showQuickPick } from '../utility';
+import { showQuickPick, execCommandOnShell } from '../utility';
 import { get } from './jump_config';
 
 const FileType = {
@@ -72,22 +71,10 @@ async function openFile(fsPath: string) {
 }
 
 async function find(command: string) {
-    return execCommand(command)
+    return execCommandOnShell(command)
         .then(str => str.split('\n'))
         .then(arr => arr.filter(_ => _ !== ''))
         .then(arr => arr.sort((a, b) => a.length - b.length));
-}
-
-function execCommand(command: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-        childProcess.exec(command, (error, stdout) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(stdout);
-            }
-        });
-    });
 }
 
 function getFileType(fsPath: string): number {

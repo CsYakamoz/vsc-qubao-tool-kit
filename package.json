@@ -2,7 +2,7 @@
     "name": "qubao-tool-kit",
     "displayName": "Qubao Tool Kit",
     "description": "qubao took kit for vscode",
-    "version": "0.0.2",
+    "version": "0.0.4",
     "publisher": "CsYakamoz",
     "engines": {
         "vscode": "^1.34.0"
@@ -168,7 +168,7 @@
             },
             {
                 "command": "extension.qtk.switching",
-                "title": "switching"
+                "title": "Switching"
             }
         ],
         "menus": {
@@ -179,8 +179,12 @@
                     "group": "navigation"
                 },
                 {
-                    "when": "editorFocus",
                     "command": "extension.qtk.pmr.exec",
+                    "group": "navigation"
+                },
+                {
+                    "when": "editorFocus",
+                    "command": "extension.qtk.switching",
                     "group": "navigation"
                 }
             ],
@@ -188,6 +192,16 @@
                 {
                     "when": "editorFocus && resourceLangId == javascript",
                     "command": "extension.qtk.switching",
+                    "group": "navigation"
+                },
+                {
+                    "when": "editorFocus",
+                    "command": "extension.qtk.cpr.exec",
+                    "group": "navigation"
+                },
+                {
+                    "when": "editorFocus",
+                    "command": "extension.qtk.pmr.exec",
                     "group": "navigation"
                 }
             ],

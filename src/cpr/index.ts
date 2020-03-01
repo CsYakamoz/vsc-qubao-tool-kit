@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import * as childProcess from 'child_process';
 
 import { init, changeText } from './status_bar';
 import {
@@ -9,7 +8,7 @@ import {
     addTargetConfig,
     updateFolderConfig
 } from './cpr_config';
-import { getFolder, showQuickPick } from '../utility';
+import { getFolder, showQuickPick, execCommandOnShell } from '../utility';
 
 export async function exec(uri: any) {
     if (uri === undefined) {
@@ -34,16 +33,10 @@ export async function exec(uri: any) {
         const relativePath = path.relative(folder, fsPath);
         const remotePath = remoteDir + '/' + relativePath;
 
-        await new Promise((resolve, reject) => {
-            const command = `scp ${fsPath} ${user}@${addr}:${remotePath}`;
-            childProcess.exec(command, error => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve();
-                }
-            });
-        });
+        await execCommandOnShell(
+            `ssh ${user}@${addr} "mkdir -p ${path.dirname(remotePath)}"`
+        );
+        await execCommandOnShell(`scp ${fsPath} ${user}@${addr}:${remotePath}`);
 
         await vscode.window.showInformationMessage(
             `Successfully copy the file to remote server with id(${id})`

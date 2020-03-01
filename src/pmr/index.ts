@@ -1,14 +1,13 @@
 import * as vscode from 'vscode';
-import * as childProcess from 'child_process';
 import { init, changeText } from './status_bar';
 import { get, update, addConfig, isCorrect } from './pmr_config';
-import { showQuickPick } from '../utility';
+import { showQuickPick, execCommandOnShell } from '../utility';
 
 export async function exec() {
     try {
         const target = getTarget();
         const listCommand = `ssh ${target.remoteUser}@${target.remoteAddr} "pm2 ls | awk '{print \\\$2}' | grep -E '[^(App)|\\\s+|(\\\`pm2)]'"`;
-        const list = await execCommand(listCommand)
+        const list = await execCommandOnShell(listCommand)
             .then(str => str.split('\n'))
             .then(arr => arr.filter(_ => _ !== ''));
 
@@ -22,7 +21,7 @@ export async function exec() {
         const selected = await showQuickPick(list);
 
         const restartCommand = `ssh ${target.remoteUser}@${target.remoteAddr} "pm2 restart ${selected}"`;
-        await execCommand(restartCommand);
+        await execCommandOnShell(restartCommand);
 
         await vscode.window.showInformationMessage(
             `Successfully restart remote process - ${selected}`
@@ -43,18 +42,6 @@ function getTarget() {
     const target = config.list.find(_ => _.id === config.targetId) as Base;
 
     return target;
-}
-
-function execCommand(command: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-        childProcess.exec(command, (error, stdout) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(stdout);
-            }
-        });
-    });
 }
 
 export async function reset() {

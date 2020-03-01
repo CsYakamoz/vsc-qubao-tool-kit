@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as childProcess from 'child_process';
 
 export async function showInputBox(placeHolder: string) {
     const result = await vscode.window.showInputBox({ placeHolder });
@@ -61,4 +62,16 @@ export async function updateConfig(configName: string, value: any) {
     await vscode.workspace
         .getConfiguration()
         .update('qtk', config, vscode.ConfigurationTarget.Global);
+}
+
+export function execCommandOnShell(command: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+        childProcess.exec(command, (error, stdout) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(stdout);
+            }
+        });
+    });
 }
