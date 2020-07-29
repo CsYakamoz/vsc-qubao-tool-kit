@@ -2,7 +2,7 @@
     "name": "qubao-tool-kit",
     "displayName": "Qubao Tool Kit",
     "description": "qubao took kit for vscode",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "publisher": "CsYakamoz",
     "engines": {
         "vscode": "^1.34.0"
@@ -211,7 +211,7 @@
             ],
             "editor/context": [
                 {
-                    "when": "editorFocus && resourceLangId == javascript",
+                    "when": "editorFocus",
                     "command": "extension.qtk.switching",
                     "group": "navigation"
                 },
@@ -223,6 +223,11 @@
                 {
                     "when": "editorFocus",
                     "command": "extension.qtk.pmr.exec",
+                    "group": "navigation"
+                },
+                {
+                    "when": "editorHasSelection",
+                    "command": "extension.qtk.exchange.exec",
                     "group": "navigation"
                 }
             ],

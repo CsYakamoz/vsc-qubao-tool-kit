@@ -16,4 +16,4 @@ An easy way to switching between schema and handler
 
 ### Exchange
 
-Like [vim-exchange](https://github.com/tommcdo/vim-exchange), but only support one file
+Like [vim-exchange](https://github.com/tommcdo/vim-exchange), but not support ExchangeLine yet

@@ -1,9 +1,13 @@
 import { window, Selection, TextEditorDecorationType } from 'vscode';
 import { get } from './config';
 
-let previousSelection: Selection | undefined;
-let previousText: string | undefined;
-let decorationType: TextEditorDecorationType | undefined;
+interface PreviousMark {
+    doc: string;
+    selection: Selection;
+    text: string;
+    decorationType: TextEditorDecorationType;
+}
+const markDict: Map<string, PreviousMark> = new Map();
 
 export async function exec() {
     const editor = window.activeTextEditor;
@@ -11,47 +15,53 @@ export async function exec() {
         return;
     }
 
+    const doc = editor.document.fileName;
     const selection = editor.selection;
     const text = editor.document.getText(selection);
 
-    if (previousSelection === undefined && previousText === undefined) {
-        previousSelection = selection;
-        previousText = text;
+    if (markDict.has(doc)) {
+        const {
+            selection: previousSelection,
+            text: previousText,
+            decorationType,
+        } = markDict.get(doc) as PreviousMark;
 
-        editor.setDecorations(getType(), [selection]);
-    } else {
         await editor.edit((editBuilder) => {
-            editBuilder.replace(previousSelection as Selection, text);
-            editBuilder.replace(selection, previousText as string);
+            editBuilder.replace(previousSelection, text);
+            editBuilder.replace(selection, previousText);
 
-            clear();
+            editor.setDecorations(decorationType, []);
+            markDict.delete(doc);
         });
+    } else {
+        const config = get();
+        const decorationType = window.createTextEditorDecorationType({
+            color: config.color,
+        });
+
+        markDict.set(doc, {
+            doc,
+            selection,
+            text,
+            decorationType,
+        });
+
+        editor.setDecorations(decorationType, [selection]);
     }
 }
 
 export async function clear() {
     const editor = window.activeTextEditor;
-    if (editor === undefined || decorationType === undefined) {
+    if (editor === undefined) {
         return;
     }
 
-    editor.setDecorations(getType(), []);
-
-    previousSelection = undefined;
-    previousText = undefined;
-    decorationType.dispose();
-    decorationType = undefined;
-}
-
-function getType(): TextEditorDecorationType {
-    const config = get();
-    if (decorationType === undefined) {
-        decorationType = window.createTextEditorDecorationType({
-            color: config.color,
-        });
-
-        return decorationType;
-    } else {
-        return decorationType;
+    const doc = editor.document.fileName;
+    if (!markDict.has(doc)) {
+        return;
     }
+
+    const { decorationType } = markDict.get(doc) as PreviousMark;
+    editor.setDecorations(decorationType, []);
+    markDict.delete(doc);
 }
