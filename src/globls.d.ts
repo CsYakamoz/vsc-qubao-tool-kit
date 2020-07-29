@@ -26,7 +26,7 @@ interface CprSetting {
     [key: string]: CprFolderConfig;
 }
 
-interface JumpSetting {
+interface SwitchingSetting {
     defaultPoint: string;
     viewColumn: number;
     preview: boolean;

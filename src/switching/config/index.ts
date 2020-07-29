@@ -5,9 +5,9 @@ const defaultSetting = {
     viewColumn: ViewColumn.Active,
     preserveFocus: false,
     preview: true
-} as JumpSetting;
+} as SwitchingSetting;
 
-export function get(): JumpSetting {
+export function get(): SwitchingSetting {
     const config = getConfig('switching');
 
     return { ...defaultSetting, ...config };
