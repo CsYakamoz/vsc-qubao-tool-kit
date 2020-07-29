@@ -12,7 +12,7 @@ export async function init() {
     const config = get();
 
     if (isCorrect(config)) {
-        const target = config.list.find(_ => _.id === config.targetId) as Base;
+        const target = config.list.find(_ => _.id === config.targetId) as PmrBase;
         button.text = `PmR-${target.id}`;
     } else {
         button.text = 'PmR-🤔';

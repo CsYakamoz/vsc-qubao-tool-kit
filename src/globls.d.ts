@@ -13,6 +13,10 @@ interface CprFolderConfig {
     list: CprBase[];
 }
 
+interface PmrBase extends Base {
+    regex?: string;
+}
+
 interface PmrSetting {
     targetId: string;
     list: Base[];

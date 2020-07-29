@@ -18,7 +18,7 @@ export async function addConfig(config: PmrSetting) {
     return base;
 }
 
-async function requiredInput(): Promise<Base> {
+async function requiredInput(): Promise<PmrBase> {
     const id = await showInputBox(
         'please input the id of this environment(it should be unique)'
     );

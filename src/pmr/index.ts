@@ -6,10 +6,12 @@ import { showQuickPick, execCommandOnShell } from '../utility';
 export async function exec() {
     try {
         const target = getTarget();
-        const listCommand = `ssh ${target.remoteUser}@${target.remoteAddr} "pm2 ls | awk '{print \\\$2}' | grep -E '[^(App)|\\\s+|(\\\`pm2)]'"`;
+        const filter = new RegExp(target.regex ? target.regex : '.*');
+        const listCommand = `ssh ${target.remoteUser}@${target.remoteAddr} "pm2 jlist | jq -c 'map(.name)'" | jq -r "join(\\"\\n\\")"`;
+
         const list = await execCommandOnShell(listCommand)
-            .then(str => str.split('\n'))
-            .then(arr => arr.filter(_ => _ !== ''));
+            .then((str) => str.split('\n'))
+            .then((arr) => arr.filter((item) => filter.test(item)));
 
         if (list.length === 0) {
             await vscode.window.showInformationMessage(
@@ -39,7 +41,7 @@ function getTarget() {
         );
     }
 
-    const target = config.list.find(_ => _.id === config.targetId) as Base;
+    const target = config.list.find((_) => _.id === config.targetId) as PmrBase;
 
     return target;
 }
@@ -49,7 +51,7 @@ export async function reset() {
         const config = getConfigWithInit();
 
         const selected = await showQuickPick(
-            config.list.map(_ => _.id).concat('⊕')
+            config.list.map((_) => _.id).concat('⊕')
         );
 
         if (selected === '⊕') {

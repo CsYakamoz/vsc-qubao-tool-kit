@@ -94,6 +94,9 @@
                                             },
                                             "remoteAddr": {
                                                 "type": "string"
+                                            },
+                                            "regex": {
+                                                "type": "string"
                                             }
                                         },
                                         "required": [
