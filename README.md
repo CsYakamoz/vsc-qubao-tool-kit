@@ -13,3 +13,7 @@ An easy way to restart a remote process that managed by pm2
 ### Switching
 
 An easy way to switching between schema and handler
+
+### Exchange
+
+Like [vim-exchange](https://github.com/tommcdo/vim-exchange), but only support one file

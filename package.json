@@ -2,7 +2,7 @@
     "name": "qubao-tool-kit",
     "displayName": "Qubao Tool Kit",
     "description": "qubao took kit for vscode",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "publisher": "CsYakamoz",
     "engines": {
         "vscode": "^1.34.0"
@@ -147,6 +147,16 @@
                                     "description": "An optional flag that when true will stop the editor from taking focus"
                                 }
                             }
+                        },
+                        "exchange": {
+                            "type": "object",
+                            "properties": {
+                                "color": {
+                                    "type": "string",
+                                    "default": "#FFBD2A",
+                                    "description": "Highlight color"
+                                }
+                            }
                         }
                     }
                 }
@@ -172,6 +182,14 @@
             {
                 "command": "extension.qtk.switching",
                 "title": "Switching"
+            },
+            {
+                "command": "extension.qtk.exchange.exec",
+                "title": "Exchange"
+            },
+            {
+                "command": "extension.qtk.exchange.clear",
+                "title": "ExchangeClear"
             }
         ],
         "menus": {

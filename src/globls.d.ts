@@ -32,3 +32,7 @@ interface SwitchingSetting {
     preview: boolean;
     preserveFocus: boolean;
 }
+
+interface ExchangeSetting {
+    color: string;
+}
