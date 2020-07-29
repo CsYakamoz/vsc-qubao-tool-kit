@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { init, changeText } from './status_bar';
-import { get, update, addConfig, isCorrect } from './pmr_config';
+import { get, update, addConfig, isCorrect } from './config';
 import { showQuickPick, execCommandOnShell } from '../utility';
 
 export async function exec() {

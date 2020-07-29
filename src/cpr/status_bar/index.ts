@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { getFolderConfig, isCorrect } from '../cpr_config';
+import { getFolderConfig, isCorrect } from '../config';
 import { getFolder } from '../../utility';
 
 const button = vscode.window.createStatusBarItem(

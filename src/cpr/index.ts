@@ -7,7 +7,7 @@ import {
     getFolderConfig,
     addTargetConfig,
     updateFolderConfig,
-} from './cpr_config';
+} from './config';
 import { getFolder, showQuickPick, execCommandOnShell } from '../utility';
 
 export async function exec(uri: any) {

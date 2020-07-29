@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { get, isCorrect } from '../pmr_config';
+import { get, isCorrect } from '../config';
 
 const button = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Left

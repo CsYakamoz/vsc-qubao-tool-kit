@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { showQuickPick, execCommandOnShell } from '../utility';
-import { get } from './jump_config';
+import { get } from './config';
 import { existsSync } from 'fs';
 
 const FileType = {
