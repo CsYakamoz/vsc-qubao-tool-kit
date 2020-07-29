@@ -6,7 +6,7 @@ import {
     getTargetConfig,
     getFolderConfig,
     addTargetConfig,
-    updateFolderConfig
+    updateFolderConfig,
 } from './cpr_config';
 import { getFolder, showQuickPick, execCommandOnShell } from '../utility';
 
@@ -21,8 +21,9 @@ export async function exec(uri: any) {
             id,
             remoteUser: user,
             remoteAddr: addr,
-            remoteDir
+            remoteDir,
         } = getTargetConfig(folder);
+
         const fsPath = uri.fsPath as string;
         if (!fsPath.startsWith(folder)) {
             const fileName = path.basename(fsPath);
@@ -30,6 +31,11 @@ export async function exec(uri: any) {
                 `file(${fileName}) does not belong to the current workspace(${folder})`
             );
         }
+
+        if (path.relative(folder, fsPath).startsWith('.git')) {
+            throw new Error(`the file path should not include .git`);
+        }
+
         const relativePath = path.relative(folder, fsPath);
         const remotePath = remoteDir + '/' + relativePath;
 
@@ -38,11 +44,32 @@ export async function exec(uri: any) {
         );
         await execCommandOnShell(`scp ${fsPath} ${user}@${addr}:${remotePath}`);
 
+        const relativePathAbbr = getAbbreviationPath(relativePath);
         await vscode.window.showInformationMessage(
-            `Successfully copy the file to remote server with id(${id})`
+            `Successfully copy the file(${relativePathAbbr}) to remote server with id(${id})`
         );
     } catch (error) {
         await vscode.window.showWarningMessage(error.message);
+    }
+}
+
+function getAbbreviationPath(relativePath: string): string {
+    const current = path.basename(relativePath);
+    const parentDir = path.basename(path.dirname(relativePath));
+
+    const list = relativePath.split('/');
+
+    if (list.length > 2) {
+        const prefix = list
+            .slice(0, list.length - 2)
+            .map((item) => item[0])
+            .join('/');
+
+        return prefix + '/' + parentDir + '/' + current;
+    } else if (list.length === 2) {
+        return parentDir + '/' + current;
+    } else {
+        return current;
     }
 }
 
@@ -52,7 +79,7 @@ export async function reset() {
         const folderConfig = getFolderConfigWithInit(folder);
 
         const selected = await showQuickPick(
-            folderConfig.list.map(_ => _.id).concat('⊕')
+            folderConfig.list.map((_) => _.id).concat('⊕')
         );
 
         if (selected === '⊕') {
