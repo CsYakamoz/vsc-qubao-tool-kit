@@ -13,6 +13,7 @@ const config = {
     'extension.qtk.switching': (uri: any) => Switching(uri),
     'extension.qtk.exchange.exec': () => Exchange.exec(),
     'extension.qtk.exchange.clear': () => Exchange.clear(),
+    'extension.qtk.exchange.exec.line': () => Exchange.execForLine(),
 };
 
 async function init() {

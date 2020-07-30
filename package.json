@@ -2,7 +2,7 @@
     "name": "qubao-tool-kit",
     "displayName": "Qubao Tool Kit",
     "description": "qubao took kit for vscode",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "publisher": "CsYakamoz",
     "engines": {
         "vscode": "^1.34.0"
@@ -190,6 +190,10 @@
             {
                 "command": "extension.qtk.exchange.clear",
                 "title": "ExchangeClear"
+            },
+            {
+                "command": "extension.qtk.exchange.exec.line",
+                "title": "ExchangeLine"
             }
         ],
         "menus": {

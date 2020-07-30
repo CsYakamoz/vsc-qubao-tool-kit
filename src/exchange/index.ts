@@ -1,9 +1,15 @@
-import { window, Selection, TextEditorDecorationType } from 'vscode';
+import {
+    window,
+    Selection,
+    TextEditorDecorationType,
+    TextEditor,
+    Range,
+} from 'vscode';
 import { get } from './config';
 
 interface PreviousMark {
     doc: string;
-    selection: Selection;
+    selection: Selection | Range;
     text: string;
     decorationType: TextEditorDecorationType;
 }
@@ -19,6 +25,45 @@ export async function exec() {
     const selection = editor.selection;
     const text = editor.document.getText(selection);
 
+    await mark(editor, doc, selection, text);
+}
+
+export async function clear() {
+    const editor = window.activeTextEditor;
+    if (editor === undefined) {
+        return;
+    }
+
+    const doc = editor.document.fileName;
+    if (!markDict.has(doc)) {
+        return;
+    }
+
+    const { decorationType } = markDict.get(doc) as PreviousMark;
+    editor.setDecorations(decorationType, []);
+    markDict.delete(doc);
+}
+
+export async function execForLine() {
+    const editor = window.activeTextEditor;
+    if (editor === undefined) {
+        return;
+    }
+
+    const doc = editor.document.fileName;
+    const { range, text } = editor.document.lineAt(
+        editor.selection.active.line
+    );
+
+    await mark(editor, doc, range, text);
+}
+
+async function mark(
+    editor: TextEditor,
+    doc: string,
+    selection: Selection | Range,
+    text: string
+) {
     if (markDict.has(doc)) {
         const {
             selection: previousSelection,
@@ -48,20 +93,4 @@ export async function exec() {
 
         editor.setDecorations(decorationType, [selection]);
     }
-}
-
-export async function clear() {
-    const editor = window.activeTextEditor;
-    if (editor === undefined) {
-        return;
-    }
-
-    const doc = editor.document.fileName;
-    if (!markDict.has(doc)) {
-        return;
-    }
-
-    const { decorationType } = markDict.get(doc) as PreviousMark;
-    editor.setDecorations(decorationType, []);
-    markDict.delete(doc);
 }
