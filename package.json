@@ -2,7 +2,7 @@
     "name": "qubao-tool-kit",
     "displayName": "Qubao Tool Kit",
     "description": "qubao took kit for vscode",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "publisher": "CsYakamoz",
     "engines": {
         "vscode": "^1.34.0"
@@ -97,6 +97,24 @@
                                             },
                                             "regex": {
                                                 "type": "string"
+                                            },
+                                            "commandList": {
+                                                "type": "array",
+                                                "description": "custom list & restart command",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string"
+                                                        },
+                                                        "list": {
+                                                            "type": "string"
+                                                        },
+                                                        "restart": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
                                             }
                                         },
                                         "required": [
